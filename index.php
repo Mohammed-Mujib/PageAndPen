@@ -21,7 +21,7 @@
             <h1> welcome to PageAndPen</h1>
         </div>
     
-    </div>
+    </div>  
     <?php include "components\\javascript.php"; ?>
 </body>
 </html>

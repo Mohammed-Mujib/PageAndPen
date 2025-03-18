@@ -7,12 +7,11 @@
         include "..\\config\\url.php";
         require "..\\config\\connection.php";
         include "..\\utilits.php";
-        // authorize();
         if(!is_authenticated()){
             header("location : login.php");
         }
         include "..\\components\\style.php" ;
-        $user = $_SESSION["active"]
+        // $user = $_SESSION["active"]
     ?>
     <title>Create</title>
 </head>
@@ -37,18 +36,21 @@
                 set_error("p_price",$price);
                 set_error("p_category",$category);
                 set_error("p_description",$description);
+
                 $userId= $user["id"];
                 if(empty($errors)){
                     $insert_query = "INSERT INTO `product` (`created_by`,`name`, `price`, `category`, `description`, `images`) 
                                         VALUES ('$userId','$name', '$price', '$category', '$description', '')";
                     $inQue = mysqli_query($conn, $insert_query);
-                    if($inQue){
+
+                    if($inQue && !empty($images)){
                         // Get the last inserted product_id
                         $product_id = mysqli_insert_id($conn);
+
                         // Create a folder for the product images
-                        $uploadDir = BASE_URL."assets/images/{$product_id}/";
-                        if(!file_exists($uploadDir)){
-                            mkdir($uploadDir,0777,true);
+                        $uploadDir = IMAGE_BASE_URL. "/assets/images/product_images/{$product_id}/";
+                        if (!file_exists($uploadDir)) {
+                            mkdir($uploadDir, 0777, true);
                         }
                         // Store images
                         $sources = [];
@@ -56,7 +58,8 @@
                             $from =  $images["tmp_name"][$i];
                             $to = $uploadDir . basename($images["name"][$i]);
                             if (move_uploaded_file($from, $to)) {
-                                array_push($sources,$to);
+                                // array_push($sources,$to);
+                                array_push($sources, "/assets/images/product_images/{$product_id}/" . basename($images["name"][$i]));
                             }
                         }
                         // Convert images array to JSON and update the database

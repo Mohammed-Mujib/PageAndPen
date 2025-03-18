@@ -15,7 +15,7 @@
         if (isset($_POST[$submitBtn]) && isset($_POST[$val_name])) {
             echo 'value = "' . $_POST[$val_name] . '"';
         }
-    }
+    }   
     // check if a specific fild have data
     function check_send ($submitBtn, $field_name, $alert_message = "This field is required"){
         if (isset($_POST[$submitBtn])){
@@ -130,4 +130,9 @@
         
     }
     
+    function arrayClean_print($arrey){
+        echo "<pre>";
+            print_r($arrey);
+        echo "</pre> <br>";
+    }
 ?>

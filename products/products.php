@@ -37,7 +37,7 @@
                     <div class="col-sm-12 col-md-4 col-lg-3 p-2">
                         <div class="card p-1 w-100 ">
                             <div class="image-holder overflow-hidden rounded position-relative mx-auto w-100">
-                                <img src="<?= $image_arr[0] ?>" class="product-outer-img mx-auto w-100" >
+                                <img src="..\<?= $image_arr[0] ?>" class="product-outer-img mx-auto w-100" alt="book image">
                                 <!-- checking if you are the admin or the owner if the product -->
                                 <?php
                                     if(is_authenticated()){
@@ -54,14 +54,17 @@
                                                     <?php } ?>
                                                     <!-- delete product form -->
                                                     <div class="w-100">
-                                                        <form action="product.php" method="post" class="w-100">
+                                                        <form action="products.php" method="post" class="w-100">
                                                             <?php
                                                                 if(isset($_POST["deleteBtn"])){
                                                                     $delete_query = "DELETE FROM `product` WHERE `id` = '{$_POST["delete"]}'";
-                                                                    $delete = mysqli_query($con,$delete_query);
+                                                                    $delete = mysqli_query($conn,$delete_query);
+                                                                    
                                                                     if($delete){
-                                                                        deleteDirectory(BASE_URL."assets/images/{$_POST['delete']}"); 
-                                                                        header("location: product.php");
+                                                                        if($image_arr){
+                                                                            deleteDirectory(IMAGE_BASE_URL."assets/images/product_images/{$_POST['delete']}");
+                                                                        }
+                                                                        header("location: products.php");
                                                                         exit;
                                                                     }
                                                                 }
@@ -84,6 +87,7 @@
                                 <p class="text-success mb-1 price">$<?= $val[3] ?></p>
                                 <small class="text-capitalize text-black-50"><?= $val[5] ?></small>
                                 <p class="card-text"><?= $val[4] ?></p>
+                                <!-- <p><?= IMAGES_BASE_URL . $image_arr[0] ?></p> -->
                             </div>
                         </div>
                     </div>

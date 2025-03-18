@@ -44,7 +44,7 @@
                                 // session_start();
                                 // $_SESSION["active"]= $user;
                                 login($user);
-                                header("Location: products.php");
+                                header("Location: ".BASE_URL. "products/products.php");
                                 exit;
                             }
                         }

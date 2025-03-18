@@ -36,7 +36,9 @@
     /* cursor: pointer; */
     overflow: hidden;
     /* max-height: 150px; */
-    max-height: 190px;
+    
+    height: 190px;
+    background-color:aliceblue;
 }
 .over-layer{
   /* background: rgb(8, 46, 80); */

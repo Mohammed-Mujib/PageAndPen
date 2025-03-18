@@ -49,26 +49,27 @@
                 $upQue = mysqli_query($conn, $update_query);
                 if ($upQue) {
                     if($images){  
-                        $uploadDir = "assets/images/{$id}/";
+                        // $uploadDir = "assets/images/{$id}/";
+                        $uploadDir = IMAGE_BASE_URL. "/assets/images/product_images/{$id}/";
                         if (!file_exists($uploadDir)) {
                             mkdir($uploadDir, 0777, true); 
                         } else{
-                            deleteDirectory("assets/images/{$id}"); 
+                            deleteDirectory(IMAGE_BASE_URL."assets/images/{$id}"); 
                             mkdir($uploadDir, 0777, true); 
                         }
                         // Store images
                         $sources = [];
                         for ($i = 0; $i < count($images["name"]); $i++) {
-                            $tmp = $images["tmp_name"][$i];
-                            $imagePath = $uploadDir . basename($images["name"][$i]);
-                            if (move_uploaded_file($tmp, $imagePath)) {
-                                $sources[] = $imagePath;
+                            $from = $images["tmp_name"][$i];
+                            $to = $uploadDir . basename($images["name"][$i]);
+                            if (move_uploaded_file($from, $to)) {
+                                array_push($sources, "/assets/images/product_images/{$id}/" . basename($images["name"][$i]));
                             }
                         }
                         // Convert images array to JSON and update the database
                         $imageJson = json_encode($sources);
-                        $update_query = "UPDATE `product` SET `images` = '$imageJson' WHERE `product_id` = '$id'";
-                        mysqli_query($con, $update_query);
+                        $update_query = "UPDATE `product` SET `images` = '$imageJson' WHERE `id` = '$id'";
+                        mysqli_query($conn, $update_query);
                     }
                     header("Location: products.php"); 
                     exit;
